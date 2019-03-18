@@ -31,7 +31,7 @@ const BackArrowExtended = styled(BackArrow)`
 const SocialLoginPresenter = () => (
   <Container>
     <Helmet>
-      <title>Social Login | Nuber</title>
+      <title>Social Login | uber</title>
     </Helmet>
     <Title>Choose an account</Title>
     <BackArrowExtended backTo={"/"} />
