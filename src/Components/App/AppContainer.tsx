@@ -1,5 +1,7 @@
 import React from "react";
 import { graphql } from "react-apollo";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 import theme from "../../theme";
 import { ThemeProvider } from "../../typed-components";
 import AppPresenter from "./AppPresenter";
@@ -9,6 +11,7 @@ const AppContainer = ({ data }) => (
   <ThemeProvider theme={theme}>
     <>
       <AppPresenter isLoggedIn={data.auth.isLoggedIn} />
+      <ToastContainer draggable={true} position={"bottom-center"}/>
     </>
   </ThemeProvider>
 );
