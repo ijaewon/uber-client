@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LOG_USER_IN } from "../../sharedQueries";
+import { LOG_USER_IN } from "../../clientLog";
 import { facebookConnect, facebookConnectVariables } from "../../types/api";
 import SocialLoginPresenter from "./SocialLoginPresenter";
 import { FACEBOOK_CONNECT } from "./SocialLoginQueries";
