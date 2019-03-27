@@ -5,6 +5,7 @@ interface IThemeInterface {
   greyColor: string;
   yellowColor: string;
   greenColor: string;
+  hintOfGrey: string;
 }
 
 const {

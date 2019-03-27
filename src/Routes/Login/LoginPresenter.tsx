@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import bgImage from '../../images/bg.png';
+import bgImage from '../../images/bg.jpeg';
 import styled from '../../typed-components';
 
 const Container = styled.div`
@@ -18,16 +18,16 @@ const Header = styled.header`
 `;
 
 const Logo = styled.div`
-  width: 110px;
+  width: 135px;
   height: 110px;
-  background-color: white;
+  color: ${props => props.theme.hintOfGrey};
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 -14px 28px rgba(0, 0, 0, 0.22);
+  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 -14px 28px rgba(0, 0, 0, 0.22); */
   text-transform: uppercase;
-  font-weight: 500;
-  font-size: 25px;
+  font-weight: 600;
+  font-size: 42px;
 `;
 
 const Title = styled.h1``;
@@ -74,13 +74,13 @@ const OutHomePresenter: React.SFC<IProps> = () => (
     </Helmet>
     <Header>
       <Logo>
-        <Title>uber</Title>
+        <Title>carpool</Title>
       </Logo>
     </Header>
     <Footer>
       <Link to={"/phone-login"}>
         <PhoneLogin>
-          <Subtitle>Get moving with uber</Subtitle>
+          <Subtitle>Get moving with carpool</Subtitle>
           <FakeInput>
             🇰🇷 +82 <Grey>Enter your mobile number</Grey>
           </FakeInput>

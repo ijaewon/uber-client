@@ -1,7 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "../../typed-components";
-import { userProfile, userProfile_GetMyProfile } from "../../types/api";
+import React from 'react';
+import { MutationFn } from 'react-apollo';
+import { Link } from 'react-router-dom';
+import styled from '../../typed-components';
+import { toggleDriving, userProfile, userProfile_GetMyProfile } from '../../types/api';
 
 const Container = styled.div`
   height: 100%;
@@ -74,9 +75,10 @@ const ToggleDriving = styled<any>("button")`
 interface IProps {
   data?: userProfile | undefined;
   loading: boolean;
+  toggleDrivingFn: MutationFn<toggleDriving>;
 }
 
-const MenuPresenter: React.SFC<IProps> = (data, loading) => {
+const MenuPresenter: React.SFC<IProps> = (data: any, toggleDrivingFn) => {
   const GetMyProfile = data.data;
   if (GetMyProfile) {
     const response: userProfile_GetMyProfile = GetMyProfile.GetMyProfile;
@@ -89,8 +91,7 @@ const MenuPresenter: React.SFC<IProps> = (data, loading) => {
               <Link to={"/edit-account"}>
                 <Image
                   src={
-                    // user.profilePhoto! <- 이렇게 하면 기본 이미지 생성 안함.
-                    user.profilePhoto || "../../images/default-user-1.svg"
+                    user.profilePhoto || "https://lh3.googleusercontent.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAUg/8T5nFuIdnHE/photo.jpg"
                   }
                 />
               </Link>
@@ -102,7 +103,7 @@ const MenuPresenter: React.SFC<IProps> = (data, loading) => {
           </Header>
           <SLink to="/trips">Your Trips</SLink>
           <SLink to="/settings">Settings</SLink>
-          <ToggleDriving isDriving={user.isDriving}>
+          <ToggleDriving isDriving={user.isDriving} onClick={toggleDrivingFn}>
             {user.isDriving ? "Stop driving" : "Start driving"}
           </ToggleDriving>
         </Container>
