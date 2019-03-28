@@ -2,10 +2,18 @@ import React from 'react';
 import { MutationFn } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import styled from '../../typed-components';
-import { toggleDriving, userProfile, userProfile_GetMyProfile } from '../../types/api';
+import { userProfile } from '../../types/api';
 
 const Container = styled.div`
   height: 100%;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 10px;
+  height: 100%;
+  align-items: center;
 `;
 
 const Header = styled.div`
@@ -52,17 +60,9 @@ const Text = styled.span`
   overflow: hidden;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-gap: 10px;
-  height: 100%;
-  align-items: center;
-`;
-
 const ToggleDriving = styled<any>("button")`
   -webkit-appearance: none;
-  background-color: ${(props) =>
+  background-color: ${props =>
     props.isDriving ? props.theme.yellowColor : props.theme.greenColor};
   width: 100%;
   color: white;
@@ -73,47 +73,49 @@ const ToggleDriving = styled<any>("button")`
 `;
 
 interface IProps {
-  data?: userProfile | undefined;
+  data?: userProfile;
   loading: boolean;
-  toggleDrivingFn: MutationFn<toggleDriving>;
+  toggleDrivingFn: MutationFn;
 }
 
-const MenuPresenter: React.SFC<IProps> = (data: any, toggleDrivingFn) => {
-  const GetMyProfile = data.data;
-  if (GetMyProfile) {
-    const response: userProfile_GetMyProfile = GetMyProfile.GetMyProfile;
-    if (response && response.ok && response.user) {
-      const user = response.user;
-      return (
-        <Container>
+const MenuPresenter: React.SFC<IProps> = ({
+  data,
+  loading,
+  toggleDrivingFn
+}) => {
+  const GetMyProfile = data!.GetMyProfile;
+  return (
+    <Container>
+      {!loading && GetMyProfile.user && GetMyProfile.ok && (
+        <React.Fragment>
           <Header>
             <Grid>
               <Link to={"/edit-account"}>
                 <Image
                   src={
-                    user.profilePhoto || "https://lh3.googleusercontent.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAUg/8T5nFuIdnHE/photo.jpg"
+                    GetMyProfile.user.profilePhoto ||
+                    "https://yt3.ggpht.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAAA/HTJy-KJ4F2c/s88-c-k-no-mo-rj-c0xffffff/photo.jpg"
                   }
                 />
               </Link>
               <Text>
-                <Name>{user.fullName}</Name>
+                <Name>{GetMyProfile.user.fullName}</Name>
                 <Rating>4.5</Rating>
               </Text>
             </Grid>
           </Header>
           <SLink to="/trips">Your Trips</SLink>
           <SLink to="/settings">Settings</SLink>
-          <ToggleDriving isDriving={user.isDriving} onClick={toggleDrivingFn}>
-            {user.isDriving ? "Stop driving" : "Start driving"}
+          <ToggleDriving
+            isDriving={GetMyProfile.user.isDriving}
+            onClick={toggleDrivingFn}
+          >
+            {GetMyProfile.user.isDriving ? "Stop Driving" : "Start Driving"}
           </ToggleDriving>
-        </Container>
-      );
-    } else {
-      return <div>can't load</div>;
-    }
-  } else {
-    return <div>can't load</div>;
-  }
+        </React.Fragment>
+      )}
+    </Container>
+  );
 };
 
 export default MenuPresenter;
