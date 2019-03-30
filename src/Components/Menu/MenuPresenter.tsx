@@ -93,8 +93,7 @@ const MenuPresenter: React.SFC<IProps> = ({
               <Link to={"/edit-account"}>
                 <Image
                   src={
-                    GetMyProfile.user.profilePhoto ||
-                    "https://yt3.ggpht.com/-CTwXMuZRaWw/AAAAAAAAAAI/AAAAAAAAAAA/HTJy-KJ4F2c/s88-c-k-no-mo-rj-c0xffffff/photo.jpg"
+                    GetMyProfile.user.profilePhoto!
                   }
                 />
               </Link>
