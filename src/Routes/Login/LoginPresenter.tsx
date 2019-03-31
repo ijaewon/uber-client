@@ -70,7 +70,7 @@ interface IProps extends RouteComponentProps<any> {}
 const OutHomePresenter: React.SFC<IProps> = () => (
   <Container>
     <Helmet>
-      <title>Login | uber</title>
+      <title>Login | carpool</title>
     </Helmet>
     <Header>
       <Logo>
