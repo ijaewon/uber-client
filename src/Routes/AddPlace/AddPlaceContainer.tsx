@@ -19,19 +19,25 @@ interface IProps extends RouteComponentProps<any> {}
 class AddPlaceMutation extends Mutation<addPlace, addPlaceVariables> {}
 
 class AddPlaceContainer extends React.Component<IProps, IState> {
-  public state = {
-    address: "",
-    lat: 0,
-    lng: 0,
-    name: ""
-  };
+
+  constructor(props: IProps) {
+    super(props);
+    const { location: { state = {} } = {} } = props;
+    this.state = {
+      address: state.address || "",
+      lat: state.lat || 0,
+      lng: state.lng || 0,
+      name: ""
+    };
+  }
+
   public render() {
     const { address, name, lat, lng } = this.state;
     const { history } = this.props;
     return (
       <AddPlaceMutation
         mutation={ADD_PLACE}
-        onCompleted={(data) => {
+        onCompleted={data => {
           const { AddPlace } = data;
           if (AddPlace.ok) {
             toast.success("Place added!");
@@ -65,9 +71,9 @@ class AddPlaceContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public onInputChange: React.ChangeEventHandler<HTMLInputElement> = async (
-    event
-  ) => {
+  public onInputChange: React.ChangeEventHandler<
+    HTMLInputElement
+  > = async event => {
     const {
       target: { name, value }
     } = event;

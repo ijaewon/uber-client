@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { geoCode, reverseGeoCode } from '../../mapHelpers';
 import FindAddressPresenter from './FindAddressPresenter';
 
@@ -9,7 +10,11 @@ interface IState {
   address: any;
 }
 
-class FindAddressContainer extends React.Component<any, IState> {
+interface IProps extends RouteComponentProps<any>{
+  google: any
+}
+
+class FindAddressContainer extends React.Component<IProps, IState> {
   public mapRef: any;
   public map: google.maps.Map;
   public state = {
@@ -36,6 +41,7 @@ class FindAddressContainer extends React.Component<any, IState> {
         address={address}
         onInputChange={this.onInputChange}
         onInputBlur={this.onInputBlur}
+        onPickPlace={this.onPickPlace}
       />
     );
   }
@@ -51,7 +57,7 @@ class FindAddressContainer extends React.Component<any, IState> {
     this.loadMap(latitude, longitude);
     this.reverseGeocodeAddress(latitude, longitude);
   };
-  
+
   public handleGeoError = () => {
     console.log("No location");
   };
@@ -94,7 +100,7 @@ class FindAddressContainer extends React.Component<any, IState> {
     } as any);
   };
 
-  public onInputBlur = async () => { //input창 밖으로 나가면 입력완료
+  public onInputBlur = async () => { // input창 밖으로 나가면 입력완료
     const { address } = this.state;
     const result: any = await geoCode(address);
     if(result !== false){
@@ -115,6 +121,19 @@ class FindAddressContainer extends React.Component<any, IState> {
         address: reversedAddress
       })
     }
+  }
+
+  public onPickPlace = () => {
+    const { address, lat, lng } = this.state;
+    this.props.history.push({
+      pathname: "/add-place",
+      state: {
+        address,
+        lat,
+        lng
+      }
+    })
+    console.log(address, lat, lng);
   }
 }
 
