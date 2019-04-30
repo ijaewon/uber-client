@@ -12,6 +12,7 @@
 
 - [ ] Home
 - [ ] Ride
+- [ ] Chat
 - [o] Edit Account
 - [o] Settings
 - [o] Places
