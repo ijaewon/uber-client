@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { reverseGeoCode } from '../../mapHelpers';
+import { geoCode, reverseGeoCode } from '../../mapHelpers';
 import FindAddressPresenter from './FindAddressPresenter';
 
 interface IState {
@@ -49,7 +49,9 @@ class FindAddressContainer extends React.Component<any, IState> {
       lng: longitude
     });
     this.loadMap(latitude, longitude);
+    this.reverseGeocodeAddress(latitude, longitude);
   };
+  
   public handleGeoError = () => {
     console.log("No location");
   };
@@ -64,22 +66,23 @@ class FindAddressContainer extends React.Component<any, IState> {
         lng: 126.887570
       },
       disableDefaultUI: true,
-      zoom: 11
+      minZoom: 8,
+      zoom: 14
     };
 
     this.map = new maps.Map(mapNode, mapConfig);
     this.map.addListener("dragend", this.handleDragEnd);
   };
-  public handleDragEnd = async () => {
+
+  public handleDragEnd =  () => {
     const newCenter = this.map.getCenter();
     const lat = newCenter.lat();
     const lng = newCenter.lng();
-    const reversedAddress = await reverseGeoCode(lat, lng);
     this.setState({
-      address: reversedAddress,
       lat,
       lng
     });
+    this.reverseGeocodeAddress(lat, lng);
   };
 
   public onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,9 +94,28 @@ class FindAddressContainer extends React.Component<any, IState> {
     } as any);
   };
 
-  public onInputBlur = () => {
-    console.log("Address updated");
+  public onInputBlur = async () => { //input창 밖으로 나가면 입력완료
+    const { address } = this.state;
+    const result: any = await geoCode(address);
+    if(result !== false){
+      const { lat, lng, formatted_address: formatedAddress } = result;
+      this.setState({
+        address: formatedAddress,
+        lat,
+        lng
+      })
+      this.map.panTo({lat, lng}); // 핀의 위치를 해당 좌표로 이동
+    }
   };
+
+  public reverseGeocodeAddress = async (lat: number, lng: number) => {
+    const reversedAddress: any = await reverseGeoCode(lat, lng);
+    if(reversedAddress !== false){
+      this.setState({
+        address: reversedAddress
+      })
+    }
+  }
 }
 
 export default FindAddressContainer;
