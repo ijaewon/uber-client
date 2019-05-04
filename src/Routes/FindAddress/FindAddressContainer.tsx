@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { RouteComponentProps } from 'react-router-dom';
-import { geoCode, reverseGeoCode } from '../../mapHelpers';
-import FindAddressPresenter from './FindAddressPresenter';
+import React from "react";
+import ReactDOM from "react-dom";
+import { RouteComponentProps } from "react-router-dom";
+import { geoCode, reverseGeoCode } from "../../mapHelpers";
+import FindAddressPresenter from "./FindAddressPresenter";
 
 interface IState {
   lat: number;
@@ -10,8 +10,8 @@ interface IState {
   address: any;
 }
 
-interface IProps extends RouteComponentProps<any>{
-  google: any
+interface IProps extends RouteComponentProps<any> {
+  google: any;
 }
 
 class FindAddressContainer extends React.Component<IProps, IState> {
@@ -46,7 +46,7 @@ class FindAddressContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public handleGeoSucces = (positon: Position) => {
+  public handleGeoSucces: PositionCallback = (positon: Position) => {
     const {
       coords: { latitude, longitude }
     } = positon;
@@ -58,7 +58,7 @@ class FindAddressContainer extends React.Component<IProps, IState> {
     this.reverseGeocodeAddress(latitude, longitude);
   };
 
-  public handleGeoError = () => {
+  public handleGeoError: PositionErrorCallback = () => {
     console.log("No location");
   };
 
@@ -68,8 +68,8 @@ class FindAddressContainer extends React.Component<IProps, IState> {
     const mapNode = ReactDOM.findDOMNode(this.mapRef.current);
     const mapConfig: google.maps.MapOptions = {
       center: {
-        lat: 37.494730,
-        lng: 126.887570
+        lat: 37.49473,
+        lng: 126.88757
       },
       disableDefaultUI: true,
       minZoom: 8,
@@ -80,7 +80,7 @@ class FindAddressContainer extends React.Component<IProps, IState> {
     this.map.addListener("dragend", this.handleDragEnd);
   };
 
-  public handleDragEnd =  () => {
+  public handleDragEnd = () => {
     const newCenter = this.map.getCenter();
     const lat = newCenter.lat();
     const lng = newCenter.lng();
@@ -100,28 +100,29 @@ class FindAddressContainer extends React.Component<IProps, IState> {
     } as any);
   };
 
-  public onInputBlur = async () => { // input창 밖으로 나가면 입력완료
+  public onInputBlur = async () => {
+    // input창 밖으로 나가면 입력완료
     const { address } = this.state;
     const result: any = await geoCode(address);
-    if(result !== false){
+    if (result !== false) {
       const { lat, lng, formatted_address: formatedAddress } = result;
       this.setState({
         address: formatedAddress,
         lat,
         lng
-      })
-      this.map.panTo({lat, lng}); // 핀의 위치를 해당 좌표로 이동
+      });
+      this.map.panTo({ lat, lng }); // 핀의 위치를 해당 좌표로 이동
     }
   };
 
   public reverseGeocodeAddress = async (lat: number, lng: number) => {
     const reversedAddress: any = await reverseGeoCode(lat, lng);
-    if(reversedAddress !== false){
+    if (reversedAddress !== false) {
       this.setState({
         address: reversedAddress
-      })
+      });
     }
-  }
+  };
 
   public onPickPlace = () => {
     const { address, lat, lng } = this.state;
@@ -132,9 +133,8 @@ class FindAddressContainer extends React.Component<IProps, IState> {
         lat,
         lng
       }
-    })
-    console.log(address, lat, lng);
-  }
+    });
+  };
 }
 
 export default FindAddressContainer;
