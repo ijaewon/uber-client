@@ -157,6 +157,7 @@ class HomeContainer extends React.Component<IProps, IState> {
           lng
         }
       };
+      // Pick Up한 주소에 빨간색 마커를 찍어줌
       this.toMarker = new maps.Marker(toMarkerOptions);
       this.toMarker.setMap(this.map);
     }
