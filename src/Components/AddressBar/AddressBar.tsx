@@ -21,7 +21,7 @@ const Container = styled.input`
 
 interface IProps {
   value: string;
-  onBlur: () => void;
+  onBlur: any;
   name: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -31,6 +31,7 @@ const AddressBar: React.SFC<IProps> = ({ value, onBlur, onChange, name }) => (
     value={value}
     onBlur={onBlur}
     onChange={onChange}
+    onSubmit={onBlur}
     placeholder={"Type address"}
     name={name}
   />
